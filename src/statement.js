@@ -16,6 +16,15 @@ function statement (invoice, plays) {
     return thisAmount;
   }
 
+  function calculateComedyAmount(thisAmount, perf) {
+    thisAmount = 30000;
+    if (perf.audience > 20) {
+      thisAmount += 10000 + 500 * (perf.audience - 20);
+    }
+    thisAmount += 300 * perf.audience;
+    return thisAmount;
+  }
+
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
     let thisAmount = 0;
@@ -24,11 +33,7 @@ function statement (invoice, plays) {
         thisAmount = calculateTragedyAmount(thisAmount, perf);
         break;
       case 'comedy':
-        thisAmount = 30000;
-        if (perf.audience > 20) {
-          thisAmount += 10000 + 500 * (perf.audience - 20);
-        }
-        thisAmount += 300 * perf.audience;
+        thisAmount = calculateComedyAmount(thisAmount, perf);
         break;
       default:
         throw new Error(`unknown type: ${play.type}`);
