@@ -64,22 +64,26 @@ function calculateVolumeCredits(perf, play, volumeCredits) {
   return volumeCredits;
 }
 
+function getThisAmount(play, perf){
+  let thisAmount = 0;
+  switch (play.type) {
+    case 'tragedy':
+      thisAmount = calculateTragedyAmount(thisAmount, perf);
+      break;
+    case 'comedy':
+      thisAmount = calculateComedyAmount(thisAmount, perf);
+      break;
+    default:
+      throw new Error(`unknown type: ${play.type}`);
+  }
+  return thisAmount;
+}
+
 function calculateTotalAmount(invoice, plays) {
   let totalAmount = 0;
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
-    let thisAmount = 0;
-    switch (play.type) {
-      case 'tragedy':
-        thisAmount = calculateTragedyAmount(thisAmount, perf);
-        break;
-      case 'comedy':
-        thisAmount = calculateComedyAmount(thisAmount, perf);
-        break;
-      default:
-        throw new Error(`unknown type: ${play.type}`);
-    }
-    totalAmount += thisAmount;
+    totalAmount += getThisAmount(play, perf);
   }
   return totalAmount;
 }
