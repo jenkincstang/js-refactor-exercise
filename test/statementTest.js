@@ -2,12 +2,6 @@ const test = require('ava');
 const {statement} = require('../src/statement');
 
 test('Sample test', t => {
-    t.true(true);
-    t.is(1, 1);
-    t.deepEqual({a: 1}, {a: 1});
-});
-
-test('Sample test', t => {
     //given
     const invoice = {
         'customer': 'BigCo',
@@ -27,7 +21,6 @@ test('Sample test', t => {
         ],
     };
 
-
     const plays = {
         'hamlet': {
             'name': 'Hamlet',
@@ -42,9 +35,9 @@ test('Sample test', t => {
             'type': 'tragedy',
         },
     };
-
+    //when
     const result = statement(invoice, plays);
-
+    //then
     t.is(result, 'Statement for BigCo\n'
         + " Hamlet: $650.00 (55 seats)\n"
         + " As You Like It: $580.00 (35 seats)\n"
@@ -66,7 +59,6 @@ test('Jenkin test', t => {
         ],
     };
 
-
     const plays = {
         'hamlet': {
             'name': 'Hamlet',
@@ -81,9 +73,9 @@ test('Jenkin test', t => {
             'type': 'tragedy',
         },
     };
-//when
+    //when
     const result = statement(invoice, plays);
-//then
+    //then
     t.is(result, 'Statement for Jenkin\n'
         + ' Hamlet: $410.00 (31 seats)\n'
         + 'Amount owed is $410.00\n'
@@ -103,7 +95,6 @@ test('tragedy hamlet with 30 audience test', t => {
         ],
     };
 
-
     const plays = {
         'hamlet': {
             'name': 'Hamlet',
@@ -118,16 +109,15 @@ test('tragedy hamlet with 30 audience test', t => {
             'type': 'tragedy',
         },
     };
-//when
+    //when
     const result = statement(invoice, plays);
-//then
+    //then
     t.is(result, 'Statement for Jenkin\n'
         + ' Hamlet: $400.00 (30 seats)\n'
         + 'Amount owed is $400.00\n'
         + 'You earned 0 credits \n'
     );
 });
-
 
 test('comedy as-like with 20 audience test', t => {
     //given
@@ -141,7 +131,6 @@ test('comedy as-like with 20 audience test', t => {
         ],
     };
 
-
     const plays = {
         'hamlet': {
             'name': 'Hamlet',
@@ -156,9 +145,9 @@ test('comedy as-like with 20 audience test', t => {
             'type': 'tragedy',
         },
     };
-//when
+    //when
     const result = statement(invoice, plays);
-//then
+    //then
     t.is(result, 'Statement for Jenkin\n'
         + ' As You Like It: $360.00 (20 seats)\n'
         + 'Amount owed is $360.00\n'
@@ -178,7 +167,6 @@ test('comedy as-like with 21 audience test', t => {
         ],
     };
 
-
     const plays = {
         'hamlet': {
             'name': 'Hamlet',
@@ -193,9 +181,9 @@ test('comedy as-like with 21 audience test', t => {
             'type': 'tragedy',
         },
     };
-//when
+    //when
     const result = statement(invoice, plays);
-//then
+    //then
     t.is(result, 'Statement for Jenkin\n'
         + ' As You Like It: $468.00 (21 seats)\n'
         + 'Amount owed is $468.00\n'
@@ -215,7 +203,6 @@ test('unkonwn type test', t => {
         ],
     };
 
-
     const plays = {
         'test': {
             'name': 'Test',
@@ -234,11 +221,13 @@ test('unkonwn type test', t => {
             'type': 'tragedy',
         },
     };
-//when
+    //when
     try {
         const result = statement(invoice, plays);
         t.fail();
-    } catch (e) {//then
+    }
+    //then
+    catch (e) {
         t.is(e.message, "unknown type: unknownType")
     }
 });
@@ -255,9 +244,9 @@ test('empty performances test', t => {
             'type': 'unknownType',
         }
     };
-//when
+    //when
     const result = statement(invoice, plays);
-//then
+    //then
     t.is(result, 'Statement for Jenkin\n'
         + 'Amount owed is $0.00\n'
         + 'You earned 0 credits \n'
@@ -306,9 +295,9 @@ test('Integration Boundary value test', t => {
             'type': 'tragedy',
         },
     };
-
+    //when
     const result = statement(invoice, plays);
-
+    //then
     t.is(result, 'Statement for Jenkin\n'
         + " Hamlet: $400.00 (30 seats)\n"
         + " As You Like It: $360.00 (20 seats)\n"
