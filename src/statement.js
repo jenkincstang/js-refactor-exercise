@@ -88,19 +88,19 @@ function calculateTotalAmount(invoice, plays) {
   return totalAmount;
 }
 
-function generateTotalOrdersInfo(invoice, plays){
+function generateTotalOrdersInfo(invoice, plays, type){
   let result = "";
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
     //print line for this order
-    result += generateOrderInfo(play, getThisAmount(play, perf), perf, "plain");
+    result += generateOrderInfo(play, getThisAmount(play, perf), perf, type);
   }
   return result;
 }
 
 function statement (invoice, plays) {
   let result = generateCustomerInfo(invoice, "plain");
-  result += generateTotalOrdersInfo(invoice, plays);
+  result += generateTotalOrdersInfo(invoice, plays, "plain");
   result += generateAmountOwedInfo(calculateTotalAmount(invoice, plays), "plain");
   result += generateCreditsInfo(calculateTotalVolumeCredits(invoice, plays), "plain");
   return result;
