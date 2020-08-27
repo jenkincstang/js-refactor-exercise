@@ -307,3 +307,61 @@ test('Integration Boundary value test', t => {
         + "You earned 10 credits \n"
     );
 });
+
+test('Integration Boundary value test for statementHtml', t => {
+    //given
+    const invoice = {
+        'customer': 'Jenkin',
+        'performances': [
+            {
+                'playID': 'hamlet',
+                'audience': 30,
+            },
+            {
+                'playID': 'as-like',
+                'audience': 20,
+            },
+            {
+                'playID': 'othello',
+                'audience': 32,
+            },
+            {
+                'playID': 'test',
+                'audience': 22,
+            },
+        ],
+    };
+
+    const plays = {
+        'hamlet': {
+            'name': 'Hamlet',
+            'type': 'tragedy',
+        },
+        'test': {
+            'name': 'Test',
+            'type': 'comedy',
+        },
+        'as-like': {
+            'name': 'As You Like It',
+            'type': 'comedy',
+        },
+        'othello': {
+            'name': 'Othello',
+            'type': 'tragedy',
+        },
+    };
+    //when
+    const result = statementHtml(invoice, plays);
+    //then
+    t.is(result, '<h1>Statement for Jenkin</h1>\n'
+        + "<table>\n"
+        + "<tr><th>play</th><th>seats</th><th>cost</th></tr>\n"
+        + " <tr><td>Hamlet</td><td>30</td><td>$400.00</td></tr>\n"
+        + " <tr><td>As You Like It</td><td>20</td><td>$360.00</td></tr>\n"
+        + " <tr><td>Othello</td><td>32</td><td>$420.00</td></tr>\n"
+        + " <tr><td>Test</td><td>22</td><td>$476.00</td></tr>\n"
+        + "</table>\n"
+        + "<p>Amount owed is <em>$1,656.00</em></p>\n"
+        + "<p>You earned <em>10</em> credits</p>\n"
+    );
+});

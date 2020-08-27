@@ -83,6 +83,42 @@ function statement (invoice, plays) {
   return result;
 }
 
+function statementHtml (invoice, plays) {
+  let totalAmount = 0;
+  let volumeCredits = 0;
+  let result = generateCustomerInfo(invoice, "html");
+
+  function calculateVolumeCredits(perf, play) {
+    // add volume credits
+    volumeCredits += Math.max(perf.audience - 30, 0);
+    // add extra credit for every ten comedy attendees
+    if ('comedy' === play.type) volumeCredits += Math.floor(perf.audience / 5);
+    return volumeCredits;
+  }
+
+  for (let perf of invoice.performances) {
+    const play = plays[perf.playID];
+    let thisAmount = 0;
+    switch (play.type) {
+      case 'tragedy':
+        thisAmount = calculateTragedyAmount(thisAmount, perf);
+        break;
+      case 'comedy':
+        thisAmount = calculateComedyAmount(thisAmount, perf);
+        break;
+      default:
+        throw new Error(`unknown type: ${play.type}`);
+    }
+    volumeCredits = calculateVolumeCredits(perf, play);
+    //print line for this order
+    result += generateOrderInfo(play, thisAmount, perf, "html");
+    totalAmount += thisAmount;
+  }
+  result += generateAmountOwedInfo(totalAmount, "html");
+  result += generateCreditsInfo(volumeCredits, "html");
+  return result;
+}
+
 module.exports = {
-  statement,
+  statement,statementHtml,
 };
