@@ -1,12 +1,16 @@
 function statement (invoice, plays) {
   let totalAmount = 0;
   let volumeCredits = 0;
-  let result = `Statement for ${invoice.customer}\n`;
+  let result = generateCustomerInfo(invoice);
   const format = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 2,
   }).format;
+
+  function generateCustomerInfo(invoice) {
+    return `Statement for ${invoice.customer}\n`;
+  }
 
   function calculateTragedyAmount(thisAmount, perf) {
     thisAmount = 40000;
@@ -30,6 +34,7 @@ function statement (invoice, plays) {
     volumeCredits += Math.max(perf.audience - 30, 0);
     // add extra credit for every ten comedy attendees
     if ('comedy' === play.type) volumeCredits += Math.floor(perf.audience / 5);
+    return volumeCredits;
   }
 
   function generateOrderInfo(play, thisAmount, perf) {
@@ -57,7 +62,7 @@ function statement (invoice, plays) {
       default:
         throw new Error(`unknown type: ${play.type}`);
     }
-    calculateVolumeCredits(perf, play);
+    volumeCredits = calculateVolumeCredits(perf, play);
     //print line for this order
     result += generateOrderInfo(play, thisAmount, perf);
     totalAmount += thisAmount;
