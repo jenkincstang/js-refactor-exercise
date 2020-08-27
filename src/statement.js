@@ -32,7 +32,7 @@ function statement (invoice, plays) {
     if ('comedy' === play.type) volumeCredits += Math.floor(perf.audience / 5);
   }
 
-  function generateOrder(play, thisAmount, perf) {
+  function generateOrderInfo(play, thisAmount, perf) {
     return ` ${play.name}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`;
   }
 
@@ -59,7 +59,7 @@ function statement (invoice, plays) {
     }
     calculateVolumeCredits(perf, play);
     //print line for this order
-    result += generateOrder(play, thisAmount, perf);
+    result += generateOrderInfo(play, thisAmount, perf);
     totalAmount += thisAmount;
   }
   result += generateAmountOwedInfo(totalAmount);
