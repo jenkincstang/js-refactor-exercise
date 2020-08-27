@@ -90,3 +90,40 @@ test('Jenkin test', t => {
       +'You earned 1 credits \n'
   );
 });
+
+test('tragedy hamlet with 30 audience test', t => {
+  //given
+  const invoice = {
+    'customer': 'Jenkin',
+    'performances': [
+      {
+        'playID': 'hamlet',
+        'audience': 30,
+      }
+    ],
+  };
+
+
+  const plays = {
+    'hamlet': {
+      'name': 'Hamlet',
+      'type': 'tragedy',
+    },
+    'as-like': {
+      'name': 'As You Like It',
+      'type': 'comedy',
+    },
+    'othello': {
+      'name': 'Othello',
+      'type': 'tragedy',
+    },
+  };
+//when
+  const result = statement(invoice, plays);
+//then
+  t.is(result, 'Statement for Jenkin\n'
+      +' Hamlet: $400.00 (30 seats)\n'
+      +'Amount owed is $400.00\n'
+      +'You earned 0 credits \n'
+  );
+});
