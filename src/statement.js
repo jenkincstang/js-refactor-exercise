@@ -92,19 +92,8 @@ function generateTotalOrdersInfo(invoice, plays){
   let result = "";
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
-    let thisAmount = 0;
-    switch (play.type) {
-      case 'tragedy':
-        thisAmount = calculateTragedyAmount(thisAmount, perf);
-        break;
-      case 'comedy':
-        thisAmount = calculateComedyAmount(thisAmount, perf);
-        break;
-      default:
-        throw new Error(`unknown type: ${play.type}`);
-    }
     //print line for this order
-    result += generateOrderInfo(play, thisAmount, perf, "plain");
+    result += generateOrderInfo(play, getThisAmount(play, perf), perf, "plain");
   }
   return result;
 }
