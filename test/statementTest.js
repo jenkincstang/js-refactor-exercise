@@ -1,6 +1,6 @@
 const test = require('ava');
 const {statement} = require('../src/statement');
-
+const {statementHtml} = require('../src/statement');
 test('Sample test', t => {
     //given
     const invoice = {
