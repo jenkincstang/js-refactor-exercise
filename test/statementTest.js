@@ -202,3 +202,43 @@ test('comedy as-like with 21 audience test', t => {
       +'You earned 4 credits \n'
   );
 });
+
+test('unkonwn type test', t => {
+  //given
+  const invoice = {
+    'customer': 'Jenkin',
+    'performances': [
+      {
+        'playID': 'test',
+        'audience': 21,
+      }
+    ],
+  };
+
+
+  const plays = {
+    'test': {
+      'name': 'Test',
+      'type': 'unknownType',
+    },
+    'hamlet': {
+      'name': 'Hamlet',
+      'type': 'tragedy',
+    },
+    'as-like': {
+      'name': 'As You Like It',
+      'type': 'comedy',
+    },
+    'othello': {
+      'name': 'Othello',
+      'type': 'tragedy',
+    },
+  };
+//when
+  try{
+    const result = statement(invoice, plays);
+    t.fail();
+  }catch (e){//then
+    t.is(e.message,"unknown type: unknownType")
+  }
+});
