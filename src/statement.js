@@ -1,15 +1,17 @@
 function statement (invoice, plays) {
   let totalAmount = 0;
   let volumeCredits = 0;
-  let result = generateCustomerInfo(invoice);
+  let result = generateCustomerInfo(invoice, "plain");
   const format = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 2,
   }).format;
 
-  function generateCustomerInfo(invoice) {
-    return `Statement for ${invoice.customer}\n`;
+  function generateCustomerInfo(invoice, type) {
+    if (type==="plain")return `Statement for ${invoice.customer}\n`;
+    if (type==="plain")return `<h1>Statement for ${invoice.customer}</h1>\n`;
+    return null;
   }
 
   function calculateTragedyAmount(thisAmount, perf) {
@@ -37,16 +39,22 @@ function statement (invoice, plays) {
     return volumeCredits;
   }
 
-  function generateOrderInfo(play, thisAmount, perf) {
-    return ` ${play.name}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`;
+  function generateOrderInfo(play, thisAmount, perf, type) {
+    if (type==="plain")return ` ${play.name}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`;
+    if (type==="html")return ` <tr><td>${play.name}</td><td>${perf.audience}</td><td>${format(thisAmount / 100)}</td></tr>\n`;
+    return null;
   }
 
-  function generateCreditsInfo(volumeCredits) {
-    return `You earned ${volumeCredits} credits \n`;
+  function generateCreditsInfo(volumeCredits, type) {
+    if (type==="plain")return `You earned ${volumeCredits} credits \n`;
+    if (type==="html")return `<p>You earned <em>${volumeCredits}</em> credits</p>\n`;
+    return null;
   }
 
-  function generateAmountOwedInfo(totalAmount) {
-    return `Amount owed is ${format(totalAmount / 100)}\n`;
+  function generateAmountOwedInfo(totalAmount, type) {
+    if (type==="plain")return `Amount owed is ${format(totalAmount / 100)}\n`;
+    if (type==="html")return `<p>Amount owed is <em>${format(totalAmount / 100)}</em></p>\n`;
+    return null;
   }
 
   for (let perf of invoice.performances) {
@@ -64,11 +72,11 @@ function statement (invoice, plays) {
     }
     volumeCredits = calculateVolumeCredits(perf, play);
     //print line for this order
-    result += generateOrderInfo(play, thisAmount, perf);
+    result += generateOrderInfo(play, thisAmount, perf, "plain");
     totalAmount += thisAmount;
   }
-  result += generateAmountOwedInfo(totalAmount);
-  result += generateCreditsInfo(volumeCredits);
+  result += generateAmountOwedInfo(totalAmount, "plain");
+  result += generateCreditsInfo(volumeCredits, "plain");
   return result;
 }
 
