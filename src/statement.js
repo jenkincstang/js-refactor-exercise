@@ -36,6 +36,14 @@ function statement (invoice, plays) {
     return ` ${play.name}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`;
   }
 
+  function generateCreditsInfo(volumeCredits) {
+    return `You earned ${volumeCredits} credits \n`;
+  }
+
+  function generateAmountOwedInfo(totalAmount) {
+    return `Amount owed is ${format(totalAmount / 100)}\n`;
+  }
+
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
     let thisAmount = 0;
@@ -54,8 +62,8 @@ function statement (invoice, plays) {
     result += generateOrder(play, thisAmount, perf);
     totalAmount += thisAmount;
   }
-  result += `Amount owed is ${format(totalAmount / 100)}\n`;
-  result += `You earned ${volumeCredits} credits \n`;
+  result += generateAmountOwedInfo(totalAmount);
+  result += generateCreditsInfo(volumeCredits);
   return result;
 }
 
