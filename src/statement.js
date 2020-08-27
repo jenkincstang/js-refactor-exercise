@@ -107,27 +107,9 @@ function statement (invoice, plays) {
 }
 
 function statementHtml (invoice, plays) {
-  let totalAmount = 0;
   let result = generateCustomerInfo(invoice, "html");
-
-  for (let perf of invoice.performances) {
-    const play = plays[perf.playID];
-    let thisAmount = 0;
-    switch (play.type) {
-      case 'tragedy':
-        thisAmount = calculateTragedyAmount(thisAmount, perf);
-        break;
-      case 'comedy':
-        thisAmount = calculateComedyAmount(thisAmount, perf);
-        break;
-      default:
-        throw new Error(`unknown type: ${play.type}`);
-    }
-    //print line for this order
-    result += generateOrderInfo(play, thisAmount, perf, "html");
-    totalAmount += thisAmount;
-  }
-  result += generateAmountOwedInfo(totalAmount, "html");
+  result += generateTotalOrdersInfo(invoice, plays, "html");
+  result += generateAmountOwedInfo(calculateTotalAmount(invoice, plays), "html");
   result += generateCreditsInfo(calculateTotalVolumeCredits(invoice, plays), "html");
   return result;
 }
