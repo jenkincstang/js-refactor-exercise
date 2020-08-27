@@ -7,19 +7,21 @@ function statement (invoice, plays) {
     currency: 'USD',
     minimumFractionDigits: 2,
   }).format;
+
+  function calculateTragedyAmount(thisAmount, perf) {
+    thisAmount = 40000;
+    if (perf.audience > 30) {
+      thisAmount += 1000 * (perf.audience - 30);
+    }
+    return thisAmount;
+  }
+
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
-    /*{
-      'playID': 'hamlet',
-      'audience': 55,
-    }*/
     let thisAmount = 0;
     switch (play.type) {
       case 'tragedy':
-        thisAmount = 40000;
-        if (perf.audience > 30) {
-          thisAmount += 1000 * (perf.audience - 30);
-        }
+        thisAmount = calculateTragedyAmount(thisAmount, perf);
         break;
       case 'comedy':
         thisAmount = 30000;
