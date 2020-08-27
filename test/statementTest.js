@@ -263,3 +263,58 @@ test('empty performances test', t => {
         + 'You earned 0 credits \n'
     );
 });
+
+test('Integration Boundary value test', t => {
+    //given
+    const invoice = {
+        'customer': 'Jenkin',
+        'performances': [
+            {
+                'playID': 'hamlet',
+                'audience': 30,
+            },
+            {
+                'playID': 'as-like',
+                'audience': 20,
+            },
+            {
+                'playID': 'othello',
+                'audience': 32,
+            },
+            {
+                'playID': 'test',
+                'audience': 22,
+            },
+        ],
+    };
+
+    const plays = {
+        'hamlet': {
+            'name': 'Hamlet',
+            'type': 'tragedy',
+        },
+        'test': {
+            'name': 'Test',
+            'type': 'comedy',
+        },
+        'as-like': {
+            'name': 'As You Like It',
+            'type': 'comedy',
+        },
+        'othello': {
+            'name': 'Othello',
+            'type': 'tragedy',
+        },
+    };
+
+    const result = statement(invoice, plays);
+
+    t.is(result, 'Statement for Jenkin\n'
+        + " Hamlet: $400.00 (30 seats)\n"
+        + " As You Like It: $360.00 (20 seats)\n"
+        + " Othello: $420.00 (32 seats)\n"
+        + " Test: $476.00 (22 seats)\n"
+        + "Amount owed is $1,656.00\n"
+        + "You earned 10 credits \n"
+    );
+});
